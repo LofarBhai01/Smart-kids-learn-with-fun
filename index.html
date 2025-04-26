@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,86 +11,55 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background: linear-gradient(to top right, #74ebd5, #ACB6E5);
+      background: linear-gradient(to top right, #8EC5FC, #E0C3FC);
       font-family: 'Poppins', sans-serif;
+      text-align: center;
     }
 
-    .stars {
-      width: 100%;
-      height: 100%;
-      background: url('https://i.ibb.co/ykz2S8c/stars.png') repeat;
-      animation: moveStars 100s linear infinite;
-      position: absolute;
-      z-index: 0;
-    }
-
-    @keyframes moveStars {
-      from {background-position: 0 0;}
-      to {background-position: -10000px 5000px;}
-    }
-
-    .clouds {
+    .background {
+      position: fixed;
       width: 100%;
       height: 100%;
       background: url('https://i.ibb.co/VYW00nv/clouds.png') repeat;
-      animation: moveClouds 200s linear infinite;
-      position: absolute;
-      opacity: 0.5;
-      z-index: 1;
+      animation: moveBackground 100s linear infinite;
+      z-index: -1;
+      opacity: 0.6;
     }
 
-    @keyframes moveClouds {
+    @keyframes moveBackground {
       from {background-position: 0 0;}
       to {background-position: 10000px 0;}
     }
 
-    .container {
-      position: relative;
-      z-index: 2;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      background: rgba(255, 255, 255, 0.3);
-      padding: 40px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      animation: float 5s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0% { transform: translate(-50%, -50%) translateY(0px);}
-      50% { transform: translate(-50%, -52%) translateY(-10px);}
-      100% { transform: translate(-50%, -50%) translateY(0px);}
-    }
-
     h1 {
+      margin-top: 80px;
       font-size: 48px;
-      color: #fff;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px #000;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px #333;
+    }
+
+    .button-container {
+      margin-top: 50px;
     }
 
     .btn {
       display: inline-block;
-      background: #6a11cb;
+      background: #ff5f6d;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
       color: #fff;
       padding: 15px 30px;
-      border-radius: 50px;
+      margin: 20px;
       font-size: 22px;
-      font-weight: bold;
+      border-radius: 50px;
       text-decoration: none;
-      margin: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      box-shadow: 0px 8px 15px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
-      cursor: pointer;
     }
 
     .btn:hover {
-      background: #2575fc;
+      background: linear-gradient(to right, #00f2fe, #4facfe);
       transform: scale(1.1);
-      box-shadow: 0 0 20px #fff;
+      box-shadow: 0px 15px 20px rgba(0,0,0,0.3);
     }
 
     footer {
@@ -97,73 +67,47 @@
       bottom: 10px;
       width: 100%;
       text-align: center;
-      color: #fff;
       font-size: 16px;
-      z-index: 2;
-      text-shadow: 1px 1px 2px #000;
+      color: #fff;
+      text-shadow: 1px 1px 2px #333;
     }
   </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
-<div class="clouds"></div>
+<div class="background"></div>
 
-<div class="container">
-  <h1>Welcome to Smart Kids!</h1>
-  <a class="btn" href="colorlearning.html" onclick="playClickSound()">Learn Colors</a><br>
-  <a class="btn" href="alphabet.html" onclick="playClickSound()">Learn Alphabets</a><br>
-  <a class="btn" href="numbers.html" onclick="playClickSound()">Learn Numbers</a><br>
+<h1>Welcome to Smart Kids!</h1>
+
+<div class="button-container">
+  <a class="btn" href="colorlearning.html" onclick="playClickSound()">Learn Colors</a>
+  <a class="btn" href="alphabet.html" onclick="playClickSound()">Learn Alphabets</a>
+  <a class="btn" href="numbers.html" onclick="playClickSound()">Learn Numbers</a>
   <a class="btn" href="matchinggame.html" onclick="playClickSound()">Play Matching Game</a>
 </div>
 
-<footer>
-  © 2025 Smart Kids - All Rights Reserved
-</footer>
+<footer>© 2025 Smart Kids</footer>
 
-<!-- JavaScript for Sound -->
+<!-- Sound Script -->
 <script>
   window.onload = function() {
-    // Speak Welcome
     const synth = window.speechSynthesis;
     const welcome = new SpeechSynthesisUtterance("Welcome to Smart Kids! Let's start learning with fun!");
     welcome.lang = 'en-US';
     welcome.pitch = 1.2;
     welcome.rate = 1;
     synth.speak(welcome);
-
-    // Background music
-    playBackgroundMusic();
   };
-
-  function playBackgroundMusic() {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator.type = 'triangle'; 
-    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime); // Very light sound
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 30); // 30 seconds background hum
-  }
 
   function playClickSound() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const clickCtx = new AudioContext();
-
     const oscillator = clickCtx.createOscillator();
     const gainNode = clickCtx.createGain();
 
     oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(800, clickCtx.currentTime);
+    oscillator.frequency.setValueAtTime(1000, clickCtx.currentTime);
     gainNode.gain.setValueAtTime(0.3, clickCtx.currentTime);
 
     oscillator.connect(gainNode);
