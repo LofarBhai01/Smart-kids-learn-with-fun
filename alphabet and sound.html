@@ -39,7 +39,7 @@
 </head>
 <body>
 
-<!-- सारे Alphabets -->
+<!-- Alphabet Buttons -->
 <div class="letter" onclick="speak('A')">A</div>
 <div class="letter" onclick="speak('B')">B</div>
 <div class="letter" onclick="speak('C')">C</div>
@@ -71,7 +71,7 @@
 function speak(letter) {
   var msg = new SpeechSynthesisUtterance();
   msg.text = letter;
-  msg.lang = "en-US";  // English Sound
+  msg.lang = "en-US";  // English language
   window.speechSynthesis.speak(msg);
 }
 </script>
