@@ -3,72 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learn Numbers</title>
+  <title>Learn Numbers 1 to 100</title>
   <style>
     body {
-      background: linear-gradient(to right, #fddb92, #d1fdff);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
       text-align: center;
-      margin: 0;
       padding: 20px;
     }
     h1 {
       color: #333;
     }
-    .numbers {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 30px;
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 500px;
+      margin: 20px auto;
     }
     .number {
-      background: white;
-      margin: 10px;
-      width: 70px;
-      height: 70px;
-      line-height: 70px;
-      border-radius: 20%;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      background: #4CAF50;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
       font-size: 24px;
-      font-weight: bold;
-      color: #ff69b4;
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: 0.3s;
     }
     .number:hover {
-      transform: scale(1.2);
-      background-color: #ffe4b5;
-    }
-    .back-button {
-      margin-top: 30px;
-      display: inline-block;
-      background: #ffb347;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
+      background: #388E3C;
     }
   </style>
 </head>
 <body>
 
-<h1>Learn Numbers</h1>
+<h1>Learn Numbers 1 to 100</h1>
 
-<div class="numbers">
-  <!-- 1 to 20 numbers -->
-  <div class="number" onclick="playNumber(1)">1</div>
-  <div class="number" onclick="playNumber(2)">2</div>
-  <div class="number" onclick="playNumber(3)">3</div>
-  <div class="number" onclick="playNumber(4)">4</div>
-  <!-- बाकी numbers भी इसी तरह... -->
-</div>
-
-<a href="index.html" class="back-button">Back to Home</a>
+<div class="number-grid" id="numberGrid"></div>
 
 <script>
-  function playNumber(num) {
-    alert('Number ' + num + ' sound will come here');
-    // Future में यहाँ real sound जोड़ सकते हो।
+  const numberGrid = document.getElementById('numberGrid');
+
+  for (let i = 1; i <= 100; i++) {
+    const numDiv = document.createElement('div');
+    numDiv.classList.add('number');
+    numDiv.textContent = i;
+    numDiv.addEventListener('click', () => speakNumber(i));
+    numberGrid.appendChild(numDiv);
+  }
+
+  function speakNumber(number) {
+    const speech = new SpeechSynthesisUtterance(number.toString());
+    speech.lang = 'en-US'; // English में बोलेगा
+    window.speechSynthesis.speak(speech);
   }
 </script>
 
