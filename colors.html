@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learn Colors</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #d4fc79, #96e6a1);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .colors {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .color {
+      margin: 10px;
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .color:hover {
+      transform: scale(1.1);
+    }
+    .back-button {
+      margin-top: 30px;
+      display: inline-block;
+      background: #ffb347;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Learn Colors</h1>
+
+<div class="colors">
+  <div class="color" style="background: red;" onclick="playColor('Red')">Red</div>
+  <div class="color" style="background: blue;" onclick="playColor('Blue')">Blue</div>
+  <div class="color" style="background: green;" onclick="playColor('Green')">Green</div>
+  <div class="color" style="background: yellow;" onclick="playColor('Yellow')">Yellow</div>
+</div>
+
+<a href="index.html" class="back-button">Back to Home</a>
+
+<script>
+  function playColor(colorName) {
+    alert(colorName + ' color sound will come here');
+    // Future में real color sounds add कर सकते हो।
+  }
+</script>
+
+</body>
+</html>
