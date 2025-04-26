@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Kids - Welcome Voice</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f); /* हल्का सा Orange Background */
+      font-family: 'Poppins', sans-serif;
+    }
+    .speak-btn {
+      padding: 20px 40px;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #2196F3; /* नीला कलर */
+      color: white;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .speak-btn:hover {
+      background-color: #0b7dda;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<button class="speak-btn" onclick="speak()">सुनो</button>
+
+<script>
+function speak() {
+  var msg = new SpeechSynthesisUtterance();
+  msg.text = "नमस्ते! स्मार्ट किड्स में आपका स्वागत है।";
+  msg.lang = "hi-IN";
+  window.speechSynthesis.speak(msg);
+}
+</script>
+
+</body>
+</html>
