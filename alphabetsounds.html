@@ -2,78 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Kids - Alphabet Sounds</title>
+  <title>Learn Alphabets - Levels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
+      background: linear-gradient(to bottom, #89f7fe, #66a6ff);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      font-size: 32px;
+      color: #333;
+    }
+
+    .level-buttons {
+      margin-top: 30px;
+    }
+
+    .level-btn {
+      display: inline-block;
+      background: #ff9a9e;
+      color: white;
+      padding: 12px 30px;
+      margin: 10px;
+      font-size: 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .level-btn:hover {
+      background: #fad0c4;
+      color: black;
+    }
+
+    .letters {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      margin: 30px;
     }
+
     .letter {
-      width: 80px;
-      height: 80px;
+      background: #fbc2eb;
+      color: #333;
+      width: 60px;
+      height: 60px;
       margin: 10px;
-      background: #4CAF50;
-      color: white;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: bold;
+      border-radius: 15px;
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+      transition: 0.2s;
     }
+
     .letter:hover {
-      background: #45a049;
+      background: #a18cd1;
+      color: #fff;
       transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      display: inline-block;
+      background: #6a11cb;
+      background: linear-gradient(to right, #2575fc, #6a11cb);
+      color: white;
+      padding: 12px 25px;
+      font-size: 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #845ec2;
     }
   </style>
 </head>
+
 <body>
 
-<!-- Alphabet Buttons -->
-<div class="letter" onclick="speak('A')">A</div>
-<div class="letter" onclick="speak('B')">B</div>
-<div class="letter" onclick="speak('C')">C</div>
-<div class="letter" onclick="speak('D')">D</div>
-<div class="letter" onclick="speak('E')">E</div>
-<div class="letter" onclick="speak('F')">F</div>
-<div class="letter" onclick="speak('G')">G</div>
-<div class="letter" onclick="speak('H')">H</div>
-<div class="letter" onclick="speak('I')">I</div>
-<div class="letter" onclick="speak('J')">J</div>
-<div class="letter" onclick="speak('K')">K</div>
-<div class="letter" onclick="speak('L')">L</div>
-<div class="letter" onclick="speak('M')">M</div>
-<div class="letter" onclick="speak('N')">N</div>
-<div class="letter" onclick="speak('O')">O</div>
-<div class="letter" onclick="speak('P')">P</div>
-<div class="letter" onclick="speak('Q')">Q</div>
-<div class="letter" onclick="speak('R')">R</div>
-<div class="letter" onclick="speak('S')">S</div>
-<div class="letter" onclick="speak('T')">T</div>
-<div class="letter" onclick="speak('U')">U</div>
-<div class="letter" onclick="speak('V')">V</div>
-<div class="letter" onclick="speak('W')">W</div>
-<div class="letter" onclick="speak('X')">X</div>
-<div class="letter" onclick="speak('Y')">Y</div>
-<div class="letter" onclick="speak('Z')">Z</div>
+<h1>Learn Alphabets</h1>
 
+<div class="level-buttons">
+  <button class="level-btn" onclick="showLevel('easy')">Easy (A-H)</button>
+  <button class="level-btn" onclick="showLevel('medium')">Medium (I-P)</button>
+  <button class="level-btn" onclick="showLevel('hard')">Hard (Q-Z)</button>
+  <button class="level-btn" onclick="showLevel('misc')">Miscellaneous</button>
+</div>
+
+<div class="letters" id="lettersArea">
+  <!-- Letters will appear here -->
+</div>
+
+<a class="back-btn" href="index.html">Back to Home</a>
+
+<!-- Script Part -->
 <script>
-function speak(letter) {
-  var msg = new SpeechSynthesisUtterance();
-  msg.text = letter;
-  msg.lang = "en-US";  // English language
-  window.speechSynthesis.speak(msg);
-}
+  const letterArea = document.getElementById('lettersArea');
+
+  function speakLetter(letter) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(letter);
+    utter.lang = 'en-US';
+    utter.pitch = 1;
+    utter.rate = 1;
+    synth.speak(utter);
+  }
+
+  function showLevel(level) {
+    letterArea.innerHTML = "";
+
+    let letters = [];
+
+    if (level === 'easy') {
+      letters = "ABCDEFGH".split('');
+    } else if (level === 'medium') {
+      letters = "IJKLMNOP".split('');
+    } else if (level === 'hard') {
+      letters = "QRSTUVWXYZ".split('');
+    } else if (level === 'misc') {
+      letters = ["?", "!", "#", "@", "&", "$"];
+    }
+
+    letters.forEach(letter => {
+      const div = document.createElement('div');
+      div.classList.add('letter');
+      div.innerText = letter;
+      div.onclick = () => {
+        speakLetter(letter);
+      };
+      letterArea.appendChild(div);
+    });
+  }
 </script>
 
 </body>
