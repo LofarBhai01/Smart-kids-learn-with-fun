@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learn Numbers</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #fddb92, #d1fdff);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .numbers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .number {
+      background: white;
+      margin: 10px;
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 20%;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff69b4;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .number:hover {
+      transform: scale(1.2);
+      background-color: #ffe4b5;
+    }
+    .back-button {
+      margin-top: 30px;
+      display: inline-block;
+      background: #ffb347;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Learn Numbers</h1>
+
+<div class="numbers">
+  <!-- 1 to 20 numbers -->
+  <div class="number" onclick="playNumber(1)">1</div>
+  <div class="number" onclick="playNumber(2)">2</div>
+  <div class="number" onclick="playNumber(3)">3</div>
+  <div class="number" onclick="playNumber(4)">4</div>
+  <!-- बाकी numbers भी इसी तरह... -->
+</div>
+
+<a href="index.html" class="back-button">Back to Home</a>
+
+<script>
+  function playNumber(num) {
+    alert('Number ' + num + ' sound will come here');
+    // Future में यहाँ real sound जोड़ सकते हो।
+  }
+</script>
+
+</body>
+</html>
