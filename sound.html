@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Kids - Voice Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #fff;
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+    button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Smart Kids: Speak & Learn</h1>
+
+<button onclick="speakHindi('नमस्ते बच्चो! चलिए आज कुछ नया सीखते हैं।')">Speak Hindi</button>
+<button onclick="speakEnglish('Hello Kids! Let us start learning.')">Speak English</button>
+
+<br><br>
+
+<button onclick="speakHindi('A for Apple')">A for Apple</button>
+<button onclick="speakHindi('B for Ball')">B for Ball</button>
+<button onclick="speakHindi('C for Cat')">C for Cat</button>
+
+<script>
+  function speakHindi(text) {
+    var msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    msg.lang = 'hi-IN'; // Hindi Language
+    msg.rate = 0.9; // थोड़ी स्लो स्पीड ताकि समझ में आये
+    window.speechSynthesis.speak(msg);
+  }
+
+  function speakEnglish(text) {
+    var msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    msg.lang = 'en-US'; // English Language
+    msg.rate = 1; // Normal Speed
+    window.speechSynthesis.speak(msg);
+  }
+</script>
+
+</body>
+</html>
