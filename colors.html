@@ -3,71 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learn Colors</title>
+  <title>Color Learning - Smart Kids</title>
   <style>
     body {
-      background: linear-gradient(to right, #d4fc79, #96e6a1);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Poppins', sans-serif;
       text-align: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       margin: 0;
       padding: 20px;
+      transition: background 0.5s;
     }
     h1 {
-      color: #333;
+      color: #2c3e50;
+      font-size: 36px;
     }
-    .colors {
+    #colorBox {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      border: 4px solid #34495e;
+      border-radius: 15px;
+    }
+    #options {
+      margin-top: 30px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 30px;
+      gap: 15px;
     }
-    .color {
-      margin: 10px;
-      width: 100px;
-      height: 100px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .color:hover {
-      transform: scale(1.1);
-    }
-    .back-button {
-      margin-top: 30px;
-      display: inline-block;
-      background: #ffb347;
-      color: white;
-      padding: 10px 20px;
+    .option-btn {
+      padding: 12px 25px;
+      font-size: 20px;
+      border: none;
       border-radius: 10px;
-      text-decoration: none;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option-btn:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+    #score {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #27ae60;
+    }
+    #message {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #8e44ad;
     }
   </style>
 </head>
 <body>
 
-<h1>Learn Colors</h1>
-
-<div class="colors">
-  <div class="color" style="background: red;" onclick="playColor('Red')">Red</div>
-  <div class="color" style="background: blue;" onclick="playColor('Blue')">Blue</div>
-  <div class="color" style="background: green;" onclick="playColor('Green')">Green</div>
-  <div class="color" style="background: yellow;" onclick="playColor('Yellow')">Yellow</div>
-</div>
-
-<a href="index.html" class="back-button">Back to Home</a>
+<h1>Learn Colors - Smart Kids</h1>
+<div id="colorBox"></div>
+<div id="options"></div>
+<div id="score">Score: 0</div>
+<div id="message"></div>
 
 <script>
-  function playColor(colorName) {
-    alert(colorName + ' color sound will come here');
-    // Future में real color sounds add कर सकते हो।
+  const colors = [
+    {name: "Red", code: "#e74c3c"},
+    {name: "Blue", code: "#3498db"},
+    {name: "Green", code: "#2ecc71"},
+    {name: "Yellow", code: "#f1c40f"},
+    {name: "Purple", code: "#9b59b6"},
+    {name: "Orange", code: "#e67e22"},
+    {name: "Pink", code: "#fd79a8"},
+    {name: "Brown", code: "#8e5a2e"},
+    {name: "Gray", code: "#7f8c8d"},
+    {name: "Black", code: "#2d3436"},
+    {name: "White", code: "#ecf0f1"}
+  ];
+
+  let currentColor;
+  let score = 0;
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   }
+
+  function generateQuestion() {
+    document.getElementById('message').textContent = '';
+    shuffle(colors);
+    currentColor = colors[0];
+    document.getElementById('colorBox').style.background = currentColor.code;
+
+    let optionsHTML = '';
+    const options = [currentColor.name];
+    while (options.length < 4) {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)].name;
+      if (!options.includes(randomColor)) {
+        options.push(randomColor);
+      }
+    }
+    shuffle(options);
+    options.forEach(option => {
+      optionsHTML += `<button class="option-btn" onclick="checkAnswer('${option}')">${option}</button>`;
+    });
+    document.getElementById('options').innerHTML = optionsHTML;
+  }
+
+  function checkAnswer(selected) {
+    if (selected === currentColor.name) {
+      document.body.style.background = currentColor.code;
+      score += 10;
+      document.getElementById('score').textContent = `Score: ${score}`;
+      speak('Very Good! Correct Color');
+      document.getElementById('message').textContent = "Awesome! Let's Go Next!";
+      setTimeout(() => {
+        document.body.style.background = "linear-gradient(135deg, #ff9a9e, #fad0c4)";
+        generateQuestion();
+      }, 1000);
+    } else {
+      speak('Try Again!');
+      document.getElementById('message').textContent = "Oops! Wrong. Try Again!";
+    }
+  }
+
+  function speak(message) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(message);
+    utter.lang = 'en-US';
+    synth.speak(utter);
+  }
+
+  generateQuestion();
 </script>
 
 </body>
