@@ -3,108 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Picture Matching Game</title>
+  <title>Matching Game - Smart Kids</title>
   <style>
     body {
-      background: linear-gradient(to right, #89f7fe, #66a6ff);
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
       text-align: center;
-      margin: 0;
       padding: 20px;
     }
     h1 {
       color: #333;
     }
-    .game-board {
-      display: flex;
-      flex-wrap: wrap;
+    #level {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    #game-board {
+      display: grid;
+      gap: 10px;
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 20px;
     }
     .card {
-      width: 100px;
-      height: 100px;
-      margin: 10px;
-      background-color: #fff;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-      border-radius: 10px;
+      width: 80px;
+      height: 80px;
+      background: #3498db;
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.1);
-    }
-    .hidden {
-      background-color: #eee;
-      color: #eee;
-    }
-    .back-button {
-      margin-top: 30px;
-      display: inline-block;
-      background: #ffb347;
-      color: white;
-      padding: 10px 20px;
+      font-size: 28px;
       border-radius: 10px;
-      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.5s, background 0.3s;
+    }
+    .flipped {
+      background: #2ecc71;
+      transform: rotateY(180deg);
+    }
+    .matched {
+      background: #9b59b6;
+      cursor: default;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #27ae60;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      background: #e67e22;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #d35400;
     }
   </style>
 </head>
 <body>
 
-<h1>Picture Matching Game</h1>
-
-<div class="game-board" id="gameBoard">
-  <!-- Cards will be created by JavaScript -->
-</div>
-
-<a href="index.html" class="back-button">Back to Home</a>
+<h1>Smart Kids: Matching Game</h1>
+<div id="level">Level 1</div>
+<div id="game-board"></div>
+<div id="message"></div>
+<button onclick="restartGame()">Restart Level</button>
 
 <script>
-  const emojis = ['🍎','🍌','⚽','✈️','🍎','🍌','⚽','✈️']; // 2-2 Same Pairs
-  let shuffledEmojis = emojis.sort(() => 0.5 - Math.random());
-  let gameBoard = document.getElementById('gameBoard');
-  let firstCard = null;
-  let secondCard = null;
+  let level = 1;
+  let firstCard, secondCard;
   let lockBoard = false;
+  const gameBoard = document.getElementById('game-board');
+  const levelDisplay = document.getElementById('level');
+  const messageDisplay = document.getElementById('message');
 
-  shuffledEmojis.forEach(emoji => {
-    let card = document.createElement('div');
-    card.className = 'card hidden';
-    card.innerText = emoji;
-    card.addEventListener('click', () => {
-      if (lockBoard || card === firstCard) return;
-      
-      card.classList.remove('hidden');
-      
-      if (!firstCard) {
-        firstCard = card;
-        return;
-      }
-      
-      secondCard = card;
-      lockBoard = true;
+  function generateCards(level) {
+    gameBoard.innerHTML = '';
+    messageDisplay.textContent = '';
+    let pairs = level + 1; // Level 1 => 2 pairs, Level 2 => 3 pairs...
+    const items = [];
+    for (let i = 1; i <= pairs; i++) {
+      items.push(i);
+      items.push(i);
+    }
+    items.sort(() => 0.5 - Math.random());
 
-      if (firstCard.innerText === secondCard.innerText) {
-        firstCard = null;
-        secondCard = null;
-        lockBoard = false;
-      } else {
-        setTimeout(() => {
-          firstCard.classList.add('hidden');
-          secondCard.classList.add('hidden');
-          firstCard = null;
-          secondCard = null;
-          lockBoard = false;
-        }, 1000);
-      }
+    let columns = Math.ceil(Math.sqrt(items.length));
+    gameBoard.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.number = item;
+      card.textContent = '';
+      card.addEventListener('click', flipCard);
+      gameBoard.appendChild(card);
     });
-    gameBoard.appendChild(card);
-  });
+  }
+
+  function flipCard() {
+    if (lockBoard) return;
+    if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+    this.classList.add('flipped');
+    this.textContent = this.dataset.number;
+
+    if (!firstCard) {
+      firstCard = this;
+      return;
+    }
+
+    secondCard = this;
+    lockBoard = true;
+
+    checkForMatch();
+  }
+
+  function checkForMatch() {
+    if (firstCard.dataset.number === secondCard.dataset.number) {
+      firstCard.classList.add('matched');
+      secondCard.classList.add('matched');
+      resetBoard();
+      checkLevelComplete();
+      playSound('correct');
+    } else {
+      setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        firstCard.textContent = '';
+        secondCard.textContent = '';
+        resetBoard();
+      }, 800);
+      playSound('wrong');
+    }
+  }
+
+  function resetBoard() {
+    [firstCard, secondCard] = [null, null];
+    lockBoard = false;
+  }
+
+  function checkLevelComplete() {
+    const unmatched = document.querySelectorAll('.card:not(.matched)');
+    if (unmatched.length === 0) {
+      messageDisplay.textContent = 'Level Completed!';
+      setTimeout(() => {
+        level++;
+        levelDisplay.textContent = `Level ${level}`;
+        generateCards(level);
+      }, 1500);
+    }
+  }
+
+  function restartGame() {
+    generateCards(level);
+  }
+
+  function playSound(type) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(type === 'correct' ? 'Correct!' : 'Try Again!');
+    utter.lang = 'en-US';
+    synth.speak(utter);
+  }
+
+  generateCards(level);
 </script>
 
 </body>
